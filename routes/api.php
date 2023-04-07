@@ -19,3 +19,6 @@ Route::controller(CategoryController::class)->group(function () {
 });
 
 Route::get('/cities', fn() => CityResource::collection(City::all()));
+
+
+require_once __DIR__ . '/auth.php';
