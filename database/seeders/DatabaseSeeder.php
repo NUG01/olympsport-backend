@@ -21,7 +21,20 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'test@example.com',
         // ]);
 
-        DB::unprepared(file_get_contents(__DIR__ . '/categories.sql'));
         DB::unprepared(file_get_contents(__DIR__ . '/cities.sql'));
+
+
+        $json = public_path('categories.json');
+        $file = file_get_contents($json);
+
+        foreach (json_decode($file) as $item) {
+            Category::create([
+                'id' => $item->id,
+                'name' => $item->name,
+                'slug' => $item->slug,
+                'parent_id' => $item->parent_id,
+            ]);
+        }
+
     }
 }

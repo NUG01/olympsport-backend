@@ -6,21 +6,21 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\CategoryRequest;
 use App\Http\Resources\CategoryResource;
 use App\Models\Category;
-use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
     public function index(): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
     {
-        return CategoryResource::collection(Category::whereNull('parent_id')->with(['children'])->get());
+        return CategoryResource::collection(Category::with('children')->whereNull('parent_id')->get());
     }
 
-    public function store(CategoryRequest $request): CategoryResource
+    public function store(CategoryRequest $request, Category $category = null): CategoryResource
     {
-        $validated = $request->validated();
-        $validated['slug'] = str_slug(preg_replace("/[\s-]+/", "_", $request->name), '_');
-        $validated['parent_id'] = json_decode($request->parent_id, true);
-        $category = Category::create($validated);
+        Category::create([
+            'name' => $request->name,
+            'slug' => $category->slug . '_' . str_slug($request->name, '_'),
+            'parent_id' => [$category->id],
+        ]);
 
         return CategoryResource::make($category);
     }

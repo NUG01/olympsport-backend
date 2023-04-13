@@ -4,22 +4,23 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use \Staudenmeir\EloquentJsonRelations\HasJsonRelationships;
+use Staudenmeir\EloquentJsonRelations\HasJsonRelationships;
 
-
-class Category extends Model
+class Brand extends Model
 {
     use HasFactory, HasJsonRelationships;
 
-    protected $table = 'categories';
+    protected $table = 'brands';
 
     public $timestamps = false;
-
     protected $fillable = [
-        'id',
         'name',
         'slug',
         'parent_id',
+    ];
+
+    protected $casts = [
+        'parent_id' => 'json',
     ];
 
     public function getRouteKeyName(): string
@@ -27,8 +28,8 @@ class Category extends Model
         return 'slug';
     }
 
-    public function children(): \Illuminate\Database\Eloquent\Relations\HasMany
+    public function category(): \Staudenmeir\EloquentJsonRelations\Relations\BelongsToJson
     {
-        return $this->hasMany(Category::class, 'parent_id', 'id');
+        return $this->belongsToJson(Category::class, 'parent_id', 'id');
     }
 }

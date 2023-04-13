@@ -11,12 +11,18 @@ class CategoryResource extends JsonResource
 {
     public function toArray(Request $request): array
     {
-        return [
+        $array = [
             'id' => $this->id,
             'name' => $this->name,
             'slug' => $this->slug,
-            'children' => CategoryResource::collection($this->children),
+//            'brands' => $this->brands,
         ];
+        if ($this->children !== null) {
+            $array['children'] = CategoryResource::collection($this->whenLoaded('children'));
+        }
+//        if ($this->tags !== null) $array['tags'] = $this->tags;
+
+        return $array;
     }
 
     public static function destroy($category)

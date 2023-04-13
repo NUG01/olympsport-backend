@@ -2,15 +2,17 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Traits\Uuid;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Staudenmeir\EloquentJsonRelations\HasJsonRelationships;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable, HasJsonRelationships, Uuid;
 
     /**
      * The attributes that are mass assignable.
@@ -18,9 +20,15 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
+        'first_name',
+        'last_name',
         'email',
         'password',
+        'city',
+        'address',
+        'avatar',
+        'verification_code',
+        'product_id',
     ];
 
     /**
@@ -40,5 +48,11 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'product_id' => 'json',
     ];
+
+    public function products(): \Staudenmeir\EloquentJsonRelations\Relations\HasManyJson
+    {
+        return $this->hasManyJson(Product::class, 'id', 'product_id');
+    }
 }
