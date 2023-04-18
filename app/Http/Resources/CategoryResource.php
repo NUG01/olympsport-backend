@@ -11,30 +11,17 @@ class CategoryResource extends JsonResource
 {
     public function toArray(Request $request): array
     {
-        $array = [
+        return [
             'id' => $this->id,
             'name' => $this->name,
             'slug' => $this->slug,
-//            'brands' => $this->brands,
+            'children' => $this->when($request->routeIs('categories.*'), function () use ($request) {
+                if ($request->routeIs('categories.index')) {
+                    return $this->whenLoaded('children');
+                } elseif ($request->routeIs('categories.show')) {
+                    return $this->children;
+                }
+            }),
         ];
-        if ($this->children !== null) {
-            $array['children'] = CategoryResource::collection($this->whenLoaded('children'));
-        }
-//        if ($this->tags !== null) $array['tags'] = $this->tags;
-
-        return $array;
-    }
-
-    public static function destroy($category)
-    {
-        $parent_ids = Category::whereNot('id', $category->id)->pluck('parent_id')->toArray();
-        $parent_ids = collect($parent_ids)->flatten(1)->toArray();
-
-        $result = array_diff($category->parent_id, $parent_ids);
-
-        $result = array_values($result);
-
-        DB::table('categories')->whereIn('id', $result)->delete();
-        $category->delete();
     }
 }
