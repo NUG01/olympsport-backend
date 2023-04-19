@@ -16,24 +16,28 @@ class DatabaseSeeder extends Seeder
     {
         // \App\Models\User::factory(10)->create();
 
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
+        \App\Models\User::factory()->create([
+            'first_name' => 'admin',
+            'last_name' => 'adminiani',
+            'username' => 'admina69',
+            'email' => 'admin@gmail.com',
+            'password' => bcrypt('Admin123'),
+            'city' => 1,
+            'email_verified_at' => now(),
+        ]);
 
-        DB::unprepared(file_get_contents(__DIR__ . '/cities.sql'));
+        // DB::unprepared(file_get_contents(__DIR__ . '/cities.sql'));
 
         $json = __DIR__.'/categories.json';
         $file = file_get_contents($json);
-
-        foreach (json_decode($file) as $item) {
-            Category::create([
-                'id' => $item->id,
-                'name' => $item->name,
-                'slug' => $item->slug,
-                'parent_id' => $item->parent_id,
-            ]);
-        }
-
+        
+         foreach (json_decode($file) as $item) {
+             Category::create([
+                 'id' => $item->id,
+                 'name' => $item->name,
+                 'slug' => $item->slug,
+                 'parent_id' => $item->parent_id,
+             ]);
+         }
     }
 }
