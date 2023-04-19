@@ -8,12 +8,12 @@ return new class extends Migration {
     /**
      * Run the migrations.
      */
-    public function up(): void
+    public function up(): voidc
     {
         Schema::create('products', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->string('title');
-            $table->json('category');
+            $table->integer('category_id');
             $table->tinyInteger('state');
             $table->text('description');
             $table->json('color')->nullable();

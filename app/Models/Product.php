@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Traits\Uuid;
+use DateTimeInterface;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Staudenmeir\EloquentJsonRelations\HasJsonRelationships;
@@ -16,7 +17,7 @@ class Product extends Model
     protected $fillable = [
         'title',
         'photos',
-        'category',
+        'category_id',
         'state',
         'description',
         'color',
@@ -29,8 +30,13 @@ class Product extends Model
         return $this->belongsToJson(User::class, 'product_id', 'id');
     }
 
-    public static function photos(): \Illuminate\Database\Eloquent\Relations\HasMany
+    public function photos(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
-        return (new Product)->hasMany(Photos::class, 'product_id', 'id');
+        return $this->hasMany(Photos::class, 'product_id', 'id');
+    }
+
+    public function categories(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Category::class, 'id', 'category_id');
     }
 }

@@ -2,12 +2,12 @@
 
 namespace App\Observers;
 
-use App\Models\Category;
+use App\Models\Product;
 use Illuminate\Support\Facades\Cache;
 
-class CategoryObserver
+class ProductObserver
 {
-    public function created(Category $category): void
+    public function created(Product $product): void
     {
         Cache::forget('products');
         Cache::forget('product_show');
@@ -15,7 +15,7 @@ class CategoryObserver
         Cache::forget('category_show');
     }
 
-    public function updated(Category $category): void
+    public function updated(Product $product): void
     {
         Cache::forget('products');
         Cache::forget('product_show');
@@ -23,7 +23,7 @@ class CategoryObserver
         Cache::forget('category_show');
     }
 
-    public function deleted(Category $category): void
+    public function deleted(Product $product): void
     {
         Cache::forget('products');
         Cache::forget('product_show');
@@ -31,4 +31,3 @@ class CategoryObserver
         Cache::forget('category_show');
     }
 }
-

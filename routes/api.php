@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\api\CategoryController;
 use App\Http\Resources\CityResource;
 use App\Models\City;
+use App\Http\Controllers\api\BrandController;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
@@ -19,6 +20,14 @@ Route::controller(CategoryController::class)->group(function () {
     Route::delete('/category/delete/{category}', 'destroy')->name('categories.destroy');
 });
 
+Route::controller(BrandController::class)->group(function () {
+    Route::get('/brands', 'index')->name('brands.index');
+    Route::post('/brand/store', 'store')->name('brands.store');
+    Route::get('/brand/{brand}', 'show')->name('brands.show');
+    Route::patch('/brand/update/{brand}', 'update')->name('brands.update');
+    Route::delete('/brand/delete/{brand}', 'delete')->name('brands.delete');
+});
+
 Route::get('/cities', fn() => CityResource::collection(City::all()));
 
 Route::controller(ProductController::class)->group(function () {
@@ -28,6 +37,7 @@ Route::controller(ProductController::class)->group(function () {
     Route::patch('/product/update/{product}', 'update')->name('products.update');
     Route::delete('/product/delete/{product}', 'destroy')->name('products.destroy');
 });
+
 
 Route::get('/product_assets', fn() => response()->json(config('product-assets')));
 

@@ -5,6 +5,9 @@ namespace App\Models;
 use App\Observers\CategoryObserver;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use \Staudenmeir\EloquentJsonRelations\HasJsonRelationships;
 
 
@@ -17,8 +20,6 @@ class Category extends Model
     protected array $observers = [
         Category::class => [CategoryObserver::class],
     ];
-
-    protected $with = ['children'];
 
     public $timestamps = false;
 
@@ -34,8 +35,18 @@ class Category extends Model
         return 'slug';
     }
 
-    public function children(): \Illuminate\Database\Eloquent\Relations\HasMany
+    public function parent(): BelongsTo
+    {
+        return $this->belongsTo(Category::class, 'parent_id', 'id');
+    }
+
+    public function children(): HasMany
     {
         return $this->hasMany(Category::class, 'parent_id', 'id');
+    }
+
+    public function products(): HasManyThrough
+    {
+        return $this->hasManyThrough(Product::class, Category::class, 'parent_id', 'category_id', 'id');
     }
 }

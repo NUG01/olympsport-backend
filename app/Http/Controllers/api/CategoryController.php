@@ -6,14 +6,15 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\CategoryRequest;
 use App\Http\Resources\CategoryResource;
 use App\Models\Category;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\Cache;
 
 class CategoryController extends Controller
 {
-    public function index(): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+    public function index(): AnonymousResourceCollection
     {
         return CategoryResource::collection(Cache::remember('categories', 60 * 60 * 24, function () {
-            return Category::with('children')->whereNull('parent_id')->get();
+            return Category::with(['children', 'products'])->whereNull('parent_id')->get();
         }));
     }
 
@@ -21,22 +22,33 @@ class CategoryController extends Controller
     {
         $data = [
             'name' => $request->name,
-            'slug' => $category->slug . '_' . str_slug($request->name, '_'),
+            'slug' => str_slug($request->name, '_'),
         ];
 
-        if ($category !== null) {
+        if ($category) {
+            $data['slug'] = $category->slug . '_' . str_slug($request->name, '_');
             $data['parent_id'] = [$category->id];
         }
 
-        Category::create($data);
+        $created_category = Category::create($data);
 
-        return CategoryResource::make($category);
+        if ($category) {
+            $created_category = $category;
+        }
+
+        return CategoryResource::make($created_category);
     }
 
     public function show(Category $category): CategoryResource
     {
         return CategoryResource::make(Cache::remember('category_show', 60 * 60 * 24, function () use ($category) {
-            return $category->loadMissing('children');
+            $category->loadMissing(['children' => function ($query) {
+                return $query->with(['children' => function ($query) {
+                    return $query->with(['children' => function ($query) {
+                        return $query->with(['children']);
+                    }, 'products']);
+                }, 'products']);
+            }, 'products']);
         }));
     }
 
@@ -58,10 +70,10 @@ class CategoryController extends Controller
         return CategoryResource::make($category);
     }
 
-    public function destroy(Category $category): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+    public function destroy(Category $category): AnonymousResourceCollection
     {
         $category->delete();
 
-        return CategoryResource::collection(Category::all());
+        return CategoryResource::collection(Category::with('children')->whereNull('parent_id')->get());
     }
 }

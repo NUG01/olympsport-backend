@@ -15,12 +15,14 @@ class ProductRequest extends FormRequest
     {
         return [
             'title' => 'required|string',
-            'photos' => 'required',
-            'category' => 'required',
+//            'photos' => 'required',
+            'category_id' => 'required',
             'state' => 'required|integer',
             'description' => 'required',
             'color' => 'sometimes',
+            'brand' => 'required',
             'size' => 'sometimes',
+            'boosted' => 'sometimes',
         ];
     }
 }

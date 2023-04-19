@@ -23,8 +23,7 @@ class DatabaseSeeder extends Seeder
 
         DB::unprepared(file_get_contents(__DIR__ . '/cities.sql'));
 
-
-        $json = public_path('categories.json');
+        $json = __DIR__.'/categories.json';
         $file = file_get_contents($json);
 
         foreach (json_decode($file) as $item) {
