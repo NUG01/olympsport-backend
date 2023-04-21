@@ -8,7 +8,7 @@ return new class extends Migration {
     /**
      * Run the migrations.
      */
-    public function up(): voidc
+    public function up()
     {
         Schema::create('products', function (Blueprint $table) {
             $table->uuid('id')->primary();

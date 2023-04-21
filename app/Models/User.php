@@ -10,10 +10,11 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Staudenmeir\EloquentJsonRelations\HasJsonRelationships;
 use Staudenmeir\EloquentJsonRelations\Relations\HasManyJson;
+use Laravel\Cashier\Billable;
 
 class User extends Authenticate implements MustVerifyEmail
 {
-    use HasApiTokens, HasFactory, Notifiable, HasJsonRelationships, Uuid;
+    use HasApiTokens, HasFactory, Notifiable, HasJsonRelationships, Uuid, Billable;
 
     /**
      * The attributes that are mass assignable.

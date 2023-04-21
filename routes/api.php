@@ -7,6 +7,7 @@ use App\Http\Controllers\api\CategoryController;
 use App\Http\Resources\CityResource;
 use App\Models\City;
 use App\Http\Controllers\api\BrandController;
+use App\Http\Controllers\api\PlanController;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
@@ -40,5 +41,7 @@ Route::controller(ProductController::class)->group(function () {
 
 
 Route::get('/product_assets', fn() => response()->json(config('product-assets')));
+
+Route::post('subscription',[PlanController::class,'subscription'])->name('subscription');
 
 require_once __DIR__ . '/auth.php';
