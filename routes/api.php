@@ -42,3 +42,6 @@ Route::controller(WebsiteAssetController::class)->group(function (){
 Route::get('/product_assets', fn () => response()->json(config('product-assets')));
 
 Route::post('subscription', [PlanController::class, 'subscription'])->name('subscription');
+
+require_once __DIR__ . '/./auth.php';
+require_once __DIR__ . '/./admin.php';

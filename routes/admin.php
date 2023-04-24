@@ -9,10 +9,10 @@ use App\Http\Controllers\Admin\WebsiteAssetController;
 
 Route::prefix('admin')->group(function () {
     Route::controller(AdminUserController::class)->group(function () {
-        Route::get('admin/users', 'index')->name('admin.users.index');
-        Route::get('admin/users/{user}', 'get')->name('admin.users.get');
-        Route::post('admin/users/status', 'setStatus')->name('admin.users.status');
-        Route::post('admin/users/edit/{user}', 'update')->name('admin.users.edit');
+        Route::get('/users', 'index')->name('admin.users.index');
+        Route::get('/users/{user}', 'get')->name('admin.users.get');
+        Route::post('/users/status', 'setStatus')->name('admin.users.status');
+        Route::post('/users/edit/{user}', 'update')->name('admin.users.edit');
     });
 
 
