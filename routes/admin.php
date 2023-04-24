@@ -2,18 +2,19 @@
 
 use App\Http\Controllers\api\ProductController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\api\BrandController;
 use App\Http\Controllers\api\CategoryController;
 use App\Http\Controllers\Admin\WebsiteAssetController;
 
 Route::prefix('admin')->group(function () {
-    Route::controller(UserController::class)->group(function () {
-        Route::get('/users', 'index')->name('admin.users.index');
-        Route::get('/users/{user}', 'get')->name('admin.users.get');
-        Route::post('/users/status/{user}', 'setStatus')->name('admin.users.status');
-        Route::post('/users/edit/{user}', 'update')->name('admin.users.edit');
+    Route::controller(AdminUserController::class)->group(function () {
+        Route::get('admin/users', 'index')->name('admin.users.index');
+        Route::get('admin/users/{user}', 'get')->name('admin.users.get');
+        Route::post('admin/users/status', 'setStatus')->name('admin.users.status');
+        Route::post('admin/users/edit/{user}', 'update')->name('admin.users.edit');
     });
+
 
     Route::controller(CategoryController::class)->group(function () {
         Route::get('/categories', [\App\Http\Controllers\Admin\CategoryController::class, 'index'])->name('admin.categories.index');
@@ -37,9 +38,9 @@ Route::prefix('admin')->group(function () {
         Route::delete('/product/delete/{product}', 'destroy')->name('admin.products.destroy');
     });
 
-    Route::controller(WebsiteAssetController::class)->group(function (){
-       Route::get('/terms_and_conditions', 'aboutUs')->name('admin.terms_and_conditions');
-       Route::get('/about_us', 'aboutUs')->name('admin.about_us');
-       Route::patch('/update/website_assets/{id}', 'update')->name('admin.update.website_assets');
+    Route::controller(WebsiteAssetController::class)->group(function () {
+        Route::get('/terms_and_conditions', 'aboutUs')->name('admin.terms_and_conditions');
+        Route::get('/about_us', 'aboutUs')->name('admin.about_us');
+        Route::patch('/update/website_assets/{id}', 'update')->name('admin.update.website_assets');
     });
 });
