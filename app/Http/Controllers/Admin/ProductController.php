@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\ProductRequest;
 use App\Http\Resources\ProductResource;
 use App\Models\Product;
+use App\Services\ProductService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
@@ -26,11 +27,9 @@ class ProductController extends Controller
         }));
     }
 
-    public function update(Product $product, ProductRequest $request): ProductResource
+    public function update(Product $product, ProductRequest $request, ProductService $service): ProductResource
     {
-        $product->update($request->validated());
-
-        return ProductResource::make($product);
+        return $service->update($product, $request);
     }
 
     public function destroy(Product $product): \Illuminate\Http\Resources\Json\AnonymousResourceCollection

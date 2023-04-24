@@ -39,4 +39,15 @@ class Brand extends Model
     {
         return $this->hasManyJson(Product::class, 'id', 'product_id');
     }
+
+    public static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function ($brand) {
+            $brand->products->each(function ($cat) {
+                $cat->delete();
+            });
+        });
+    }
 }

@@ -49,4 +49,19 @@ class Category extends Model
     {
         return $this->hasManyThrough(Product::class, Category::class, 'parent_id', 'category_id', 'id');
     }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function ($category) {
+            $category->products->each(function ($cat) {
+                $cat->delete();
+            });
+
+            $category->children->each(function ($cat) {
+                $cat->delete();
+            });
+        });
+    }
 }

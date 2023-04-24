@@ -31,9 +31,12 @@ class BrandController extends Controller
         return BrandResource::make($brand->loadMissing(['categories', 'products']));
     }
 
-    public function update()
+    public function update(Brand $brand, BrandRequest $request)
     {
+        $validated = $request->validated();
+        $validated['slug'] = str_slug(preg_replace("/[\s-]+/", "_", $request->name), '_');
 
+        $brand->update($request->validated());
     }
 
     public function destroy(Brand $brand): AnonymousResourceCollection

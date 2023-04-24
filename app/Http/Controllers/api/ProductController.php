@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\ProductRequest;
 use App\Http\Resources\ProductResource;
 use App\Models\Product;
+use App\Services\ProductService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 
@@ -18,23 +19,9 @@ class ProductController extends Controller
         }));
     }
 
-    public function store(ProductRequest $request): ProductResource
+    public function store(ProductRequest $request, ProductService $service): ProductResource
     {
-        $photos = $request->file('photos')->store('product_images');
-
-        $validated = $request->validated();
-        $validated['photos'] = $photos;
-
-        $product = Product::create($validated);
-        /**/
-        $product_id = match (Auth::user()->product_id) {
-            null => (array)$product->id,
-            default => array_merge(Auth::user()->product_id, (array)$product->id),
-        };
-
-        Auth::user()->update(['product_id' => $product_id,]);
-
-        return ProductResource::make($product);
+        return $service->create($request);
     }
 
     public function show(Product $product): ProductResource
@@ -44,11 +31,9 @@ class ProductController extends Controller
         }));
     }
 
-    public function update(Product $product, ProductRequest $request): ProductResource
+    public function update(Product $product, ProductRequest $request, ProductService $service): ProductResource
     {
-        $product->update($request->validated());
-
-        return ProductResource::make($product);
+       return  $service->update($product, $request);
     }
 
     public function destroy(Product $product): \Illuminate\Http\Resources\Json\AnonymousResourceCollection

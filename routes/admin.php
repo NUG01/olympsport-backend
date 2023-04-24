@@ -4,7 +4,7 @@ use App\Http\Controllers\api\ProductController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\api\BrandController;
-use App\Http\Controllers\api\CategoryController;
+use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\WebsiteAssetController;
 
 Route::prefix('admin')->group(function () {
@@ -17,7 +17,7 @@ Route::prefix('admin')->group(function () {
 
 
     Route::controller(CategoryController::class)->group(function () {
-        Route::get('/categories', [\App\Http\Controllers\Admin\CategoryController::class, 'index'])->name('admin.categories.index');
+        Route::get('/categories', 'index')->name('admin.categories.index');
         Route::post('/category/store/{category?}', 'store')->name('admin.categories.store');
         Route::get('/category/{category}', 'show')->name('admin.categories.show');
         Route::patch('/category/update/{category}', 'update')->name('admin.categories.update');
