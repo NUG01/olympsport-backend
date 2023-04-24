@@ -26,8 +26,9 @@ class UserController extends Controller
         return response()->noContent();
     }
 
-    public function setStatus(User $user)
+    public function setStatus(Request $request)
     {
+        $user=User::find($request->id);
         $verified = $user->email_verified_at;
         $verified ?  $user->email_verified_at = null : $user->email_verified_at = now();
         $user->save();

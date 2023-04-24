@@ -52,7 +52,7 @@ Route::post('subscription', [PlanController::class, 'subscription'])->name('subs
 Route::controller(AdminUserController::class)->group(function () {
     Route::get('admin/users', 'index')->name('admin.users.index');
     Route::get('admin/users/{user}', 'get')->name('admin.users.get');
-    Route::post('admin/users/status/{user}', 'setStatus')->name('admin.users.status');
+    Route::post('admin/users/status', 'setStatus')->name('admin.users.status');
     Route::post('admin/users/edit/{user}', 'update')->name('admin.users.edit');
 });
 
