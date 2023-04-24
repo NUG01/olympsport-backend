@@ -12,6 +12,7 @@ Route::prefix('admin')->group(function () {
         Route::get('/users', 'index')->name('admin.users.index');
         Route::get('/users/{user}', 'get')->name('admin.users.get');
         Route::post('/users/status', 'setStatus')->name('admin.users.status');
+        Route::delete('/users/delete/{user}', 'destroy')->name('admin.users.destroy');
         Route::post('/users/edit/{user}', 'update')->name('admin.users.edit');
     });
 

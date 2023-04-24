@@ -19,6 +19,11 @@ class UserController extends Controller
     {
         return response()->json($user);
     }
+    public function destroy(User $user)
+    {
+        $user->delete();
+        return response()->noContent();
+    }
 
     public function update(EditUserRequest $request, User $user)
     {
@@ -28,7 +33,7 @@ class UserController extends Controller
 
     public function setStatus(Request $request)
     {
-        $user=User::find($request->id);
+        $user = User::find($request->id);
         $verified = $user->email_verified_at;
         $verified ?  $user->email_verified_at = null : $user->email_verified_at = now();
         $user->save();
