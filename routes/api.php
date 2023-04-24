@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\UserController as AdminUserController;
+use App\Http\Controllers\Admin\WebsiteAssetController;
 use App\Http\Controllers\api\ProductController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -16,18 +17,12 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::controller(CategoryController::class)->group(function () {
     Route::get('/categories', 'index')->name('categories.index');
-    Route::post('/category/store/{category?}', 'store')->name('categories.store');
     Route::get('/category/{category}', 'show')->name('categories.show');
-    Route::patch('/category/update/{category}', 'update')->name('categories.update');
-    Route::delete('/category/delete/{category}', 'destroy')->name('categories.destroy');
 });
 
 Route::controller(BrandController::class)->group(function () {
     Route::get('/brands', 'index')->name('brands.index');
-    Route::post('/brand/store', 'store')->name('brands.store');
     Route::get('/brand/{brand}', 'show')->name('brands.show');
-    Route::patch('/brand/update/{brand}', 'update')->name('brands.update');
-    Route::delete('/brand/delete/{brand}', 'delete')->name('brands.delete');
 });
 
 Route::get('/cities', fn () => CityResource::collection(City::all()));
@@ -40,28 +35,14 @@ Route::controller(ProductController::class)->group(function () {
     Route::delete('/product/delete/{product}', 'destroy')->name('products.destroy');
 });
 
+Route::controller(WebsiteAssetController::class)->group(function (){
+    Route::get('/about_us', 'aboutUs')->name('admin.about_us');
+    Route::get('/terms_and_conditions', 'aboutUs')->name('admin.terms_and_conditions');
+});
 
 Route::get('/product_assets', fn () => response()->json(config('product-assets')));
 
 Route::post('subscription', [PlanController::class, 'subscription'])->name('subscription');
 
-
-
-///Admin routes
-
-Route::controller(AdminUserController::class)->group(function () {
-    Route::get('admin/users', 'index')->name('admin.users.index');
-    Route::get('admin/users/{user}', 'get')->name('admin.users.get');
-    Route::post('admin/users/status/{user}', 'setStatus')->name('admin.users.status');
-    Route::post('admin/users/edit/{user}', 'update')->name('admin.users.edit');
-});
-
-Route::controller(AdminUserController::class)->group(function () {
-    Route::get('admin/categories', 'index')->name('admin.categories.index');
-    // Route::get('admin/users/{user}', 'get')->name('admin.users.get');
-    // Route::post('admin/users/status/{user}', 'setStatus')->name('admin.users.status');
-    // Route::post('admin/users/edit/{user}', 'update')->name('admin.users.edit');
-});
-
-
 require_once __DIR__ . '/auth.php';
+require_once __DIR__ . '/admin.php';
