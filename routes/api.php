@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\api\ProductController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -29,7 +30,7 @@ Route::controller(BrandController::class)->group(function () {
     Route::delete('/brand/delete/{brand}', 'delete')->name('brands.delete');
 });
 
-Route::get('/cities', fn() => CityResource::collection(City::all()));
+Route::get('/cities', fn () => CityResource::collection(City::all()));
 
 Route::controller(ProductController::class)->group(function () {
     Route::get('/products', 'index')->name('products.index');
@@ -40,8 +41,20 @@ Route::controller(ProductController::class)->group(function () {
 });
 
 
-Route::get('/product_assets', fn() => response()->json(config('product-assets')));
+Route::get('/product_assets', fn () => response()->json(config('product-assets')));
 
-Route::post('subscription',[PlanController::class,'subscription'])->name('subscription');
+Route::post('subscription', [PlanController::class, 'subscription'])->name('subscription');
+
+
+
+///Admin routes
+
+Route::controller(AdminUserController::class)->group(function () {
+    Route::get('admin/users', 'index')->name('admin.users.index');
+    Route::get('admin/users/{user}', 'get')->name('admin.users.get');
+    Route::post('admin/users/status/{user}', 'setStatus')->name('admin.users.status');
+    Route::post('admin/users/edit/{user}', 'update')->name('admin.users.edit');
+});
+
 
 require_once __DIR__ . '/auth.php';
