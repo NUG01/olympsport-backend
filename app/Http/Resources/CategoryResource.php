@@ -18,6 +18,10 @@ class CategoryResource extends JsonResource
                     return $this->whenLoaded('children');
                 } elseif ($request->routeIs('categories.show')) {
                     return $this->children;
+                } elseif ($request->routeIs('admin.categories.index')) {
+                    return $this->children->count();
+                } elseif ($request->routeIs('admin.categories.show')){
+                    return $this->children;
                 }
             }),
         ];

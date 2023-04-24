@@ -25,9 +25,9 @@ class CategoryController extends Controller
         return $service->create($request, $category);
     }
 
-    public function show(Category $category): AnonymousResourceCollection
+    public function show(Category $category): CategoryResource
     {
-        return CategoryResource::collection(Cache::remember('category_show', 60 * 60 * 24, function () use ($category) {
+        return CategoryResource::make(Cache::remember('category_show', 60 * 60 * 24, function () use ($category) {
             return $category->loadMissing(['products', 'children' => function ($query) {
                 $query->with('children', 'products');
             }]);
