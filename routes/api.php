@@ -56,5 +56,12 @@ Route::controller(AdminUserController::class)->group(function () {
     Route::post('admin/users/edit/{user}', 'update')->name('admin.users.edit');
 });
 
+Route::controller(AdminUserController::class)->group(function () {
+    Route::get('admin/categories', 'index')->name('admin.categories.index');
+    // Route::get('admin/users/{user}', 'get')->name('admin.users.get');
+    // Route::post('admin/users/status/{user}', 'setStatus')->name('admin.users.status');
+    // Route::post('admin/users/edit/{user}', 'update')->name('admin.users.edit');
+});
+
 
 require_once __DIR__ . '/auth.php';
