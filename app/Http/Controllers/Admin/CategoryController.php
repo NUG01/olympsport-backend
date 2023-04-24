@@ -3,12 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\BrandRequest;
 use App\Http\Requests\CategoryRequest;
-use App\Http\Resources\Admin\CategoryResource as AdminCategoryResource;
-use App\Http\Resources\BrandResource;
 use App\Http\Resources\CategoryResource;
-use App\Models\Brand;
 use App\Models\Category;
 use App\Services\CategoryService;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
