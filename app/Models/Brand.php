@@ -16,11 +16,13 @@ class Brand extends Model
     protected $fillable = [
         'name',
         'slug',
-        'parent_id',
+        'category_id',
+        'product_id',
     ];
 
     protected $casts = [
         'parent_id' => 'json',
+        'product_id' => 'json',
     ];
 
     public function getRouteKeyName(): string
@@ -28,8 +30,13 @@ class Brand extends Model
         return 'slug';
     }
 
-    public function category(): \Staudenmeir\EloquentJsonRelations\Relations\BelongsToJson
+    public function categories(): \Staudenmeir\EloquentJsonRelations\Relations\BelongsToJson
     {
-        return $this->belongsToJson(Category::class, 'parent_id', 'id');
+        return $this->belongsToJson(Category::class, 'category_id', 'id');
+    }
+
+    public function products(): \Staudenmeir\EloquentJsonRelations\Relations\HasManyJson
+    {
+        return $this->hasManyJson(Product::class, 'id', 'product_id');
     }
 }

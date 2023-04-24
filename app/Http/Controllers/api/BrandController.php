@@ -12,7 +12,7 @@ class BrandController extends Controller
 {
     public function index(): AnonymousResourceCollection
     {
-        return BrandResource::collection(Brand::all());
+        return BrandResource::collection(Brand::with(['products', 'categories'])->get());
     }
 
     public function store(BrandRequest $request): BrandResource
@@ -28,7 +28,7 @@ class BrandController extends Controller
 
     public function show(Brand $brand): BrandResource
     {
-        return BrandResource::make($brand);
+        return BrandResource::make($brand->loadMissing(['categories', 'products']));
     }
 
     public function update()

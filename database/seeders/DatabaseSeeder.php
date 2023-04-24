@@ -30,29 +30,32 @@ class DatabaseSeeder extends Seeder
 
         // DB::unprepared(file_get_contents(__DIR__ . '/cities.sql'));
 
-        $json = __DIR__.'/categories.json';
+        $json = __DIR__ . '/categories.json';
         $file = file_get_contents($json);
 
-         foreach (json_decode($file) as $item) {
-             Category::create([
-                 'id' => $item->id,
-                 'name' => $item->name,
-                 'slug' => $item->slug,
-                 'parent_id' => $item->parent_id,
-             ]);
-         }
+        foreach (json_decode($file) as $item) {
+            Category::create([
+                'id' => $item->id,
+                'name' => $item->name,
+                'slug' => $item->slug,
+                'parent_id' => $item->parent_id,
+            ]);
+        }
 
-         Plan::create([
-             'name' => 'default plan',
-             'slug' => 'default-plan',
-             'stripe_plan' => 'price_1MyAszBhh6cLMIbZRfNXpUl1',
-             'price' => 10,
-         ]);
+        Plan::create([
+            'name' => 'default plan',
+            'slug' => 'default-plan',
+            'stripe_plan' => 'price_1MyAszBhh6cLMIbZRfNXpUl1',
+            'price' => 10,
+        ]);
         Plan::create([
             'name' => 'bussiness plan',
             'slug' => 'bussiness-plan',
             'stripe_plan' => 'price_1MyAszBhh6cLMIbZ2zk5uuqf',
             'price' => 20,
         ]);
+
+        DB::table('website_assets')->insert(['website_text' => 'terms and conditions']);
+        DB::table('website_assets')->insert(['website_text' => 'about us']);
     }
 }
