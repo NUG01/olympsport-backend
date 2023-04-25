@@ -10,6 +10,7 @@ use App\Services\CategoryService;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
@@ -44,5 +45,12 @@ class CategoryController extends Controller
         $category->delete();
 
         return response()->noContent();
+    }
+
+    public function search(Request $request)
+    {
+
+        $categories = Category::where('name', 'like', $request->name . '%')->get();
+        return response()->json(['data' => $categories]);
     }
 }

@@ -23,6 +23,7 @@ Route::prefix('admin')->group(function () {
         Route::get('/category/{category}', 'show')->name('admin.categories.show');
         Route::patch('/category/update/{category}', 'update')->name('admin.categories.update');
         Route::delete('/category/delete/{category}', 'destroy')->name('admin.categories.destroy');
+        Route::post('/category/search', 'search')->name('admin.categories.search');
     });
 
     Route::controller(BrandController::class)->group(function () {
