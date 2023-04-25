@@ -1,11 +1,12 @@
 <?php
 
-use App\Http\Controllers\api\ProductController;
+use App\Http\Controllers\Admin\{CategoryController,
+    UserController as AdminUserController,
+    WebsiteAssetController,
+    BrandController,
+    ProductController,
+};
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Admin\UserController as AdminUserController;
-use App\Http\Controllers\api\BrandController;
-use App\Http\Controllers\Admin\CategoryController;
-use App\Http\Controllers\Admin\WebsiteAssetController;
 
 Route::prefix('admin')->group(function () {
     Route::controller(AdminUserController::class)->group(function () {
@@ -18,11 +19,10 @@ Route::prefix('admin')->group(function () {
         Route::get('/users/city/{city}', 'getCity')->name('admin.users.city');
     });
 
-
     Route::controller(CategoryController::class)->group(function () {
         Route::get('/categories', 'index')->name('admin.categories.index');
         Route::post('/category/store/{category?}', 'store')->name('admin.categories.store');
-        Route::get('/category/{category}', 'show')->name('admin.categories.show');
+        Route::get('/category/{category:id}', 'show')->name('admin.categories.show');
         Route::patch('/category/update/{category}', 'update')->name('admin.categories.update');
         Route::delete('/category/delete/{category}', 'destroy')->name('admin.categories.destroy');
         Route::post('/category/search', 'search')->name('admin.categories.search');

@@ -7,15 +7,15 @@ use App\Http\Requests\CategoryRequest;
 use App\Http\Resources\CategoryResource;
 use App\Models\Category;
 use App\Services\CategoryService;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class CategoryController extends Controller
 {
-    public function index()
+    public function index(): AnonymousResourceCollection
     {
         return CategoryResource::collection(Cache::remember('admin_categories', 60 * 60 * 24, function () {
             return Category::all();
@@ -48,7 +48,7 @@ class CategoryController extends Controller
         return response()->noContent();
     }
 
-    public function search(Request $request)
+    public function search(Request $request): JsonResponse
     {
         $categories = Category::where('name', 'like', '%' . $request->city_name . '%')->get();
         return response()->json(['data' => $categories]);
