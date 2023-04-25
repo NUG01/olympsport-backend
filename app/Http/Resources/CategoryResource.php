@@ -14,9 +14,10 @@ class CategoryResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'slug' => $this->slug,
-            'parent' => $this->parent_id != null ?  Category::where(
-                [['slug', '=', $this->slug], ['parent_id', '=', $this->parent_id == 1  ? null : ($this->parent_id) - 1]]
-            )->first() : null,
+            'parent' => Category::where(
+                'id',
+                $this->parent_id
+            )->first(),
             'children' => $this->when($this->children !== null, function () use ($request) {
                 if ($request->routeIs('categories.index')) {
                     return $this->whenLoaded('children');

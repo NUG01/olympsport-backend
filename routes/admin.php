@@ -22,7 +22,7 @@ Route::prefix('admin')->group(function () {
     Route::controller(CategoryController::class)->group(function () {
         Route::get('/categories', 'index')->name('admin.categories.index');
         Route::post('/category/store/{category?}', 'store')->name('admin.categories.store');
-        Route::get('/category/{category:slug}', 'show')->name('admin.categories.show');
+        Route::get('/category/{category:id}', 'show')->name('admin.categories.show');
         Route::patch('/category/update/{category}', 'update')->name('admin.categories.update');
         Route::delete('/category/delete/{category}', 'destroy')->name('admin.categories.destroy');
         Route::post('/category/search', 'search')->name('admin.categories.search');

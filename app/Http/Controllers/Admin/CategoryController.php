@@ -16,9 +16,9 @@ class CategoryController extends Controller
 {
     public function index(): AnonymousResourceCollection
     {
-        return CategoryResource::collection(Cache::remember('categories', 60 * 60 * 24, function () {
-            return Category::whereNull('parent_id')->get();
-        }));
+        return CategoryResource::collection(
+            Category::whereNull('parent_id')->get()
+        );
     }
 
     public function store(CategoryRequest $request, CategoryService $service, Category $category = null): CategoryResource
@@ -30,7 +30,7 @@ class CategoryController extends Controller
     {
         return CategoryResource::make(
             $category->loadMissing(['products', 'children' => function ($query) {
-                $query->with('children', 'products');
+                $query->with('children.children', 'products');
             }])
         );
     }

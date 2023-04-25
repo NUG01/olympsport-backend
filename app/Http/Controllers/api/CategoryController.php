@@ -12,9 +12,9 @@ class CategoryController extends Controller
 {
     public function index(): AnonymousResourceCollection
     {
-        return CategoryResource::collection(Cache::remember('categories', 60 * 60 * 24, function () {
-            return Category::with(['children', 'products'])->whereNull('parent_id')->get();
-        }));
+        return CategoryResource::collection(
+            Category::with(['children.children', 'products'])->whereNull('parent_id')->get()
+        );
     }
 
     public function show(Category $category): AnonymousResourceCollection
