@@ -28,7 +28,7 @@ class DatabaseSeeder extends Seeder
             'email_verified_at' => now(),
         ]);
 
-        // DB::unprepared(file_get_contents(__DIR__ . '/cities.sql'));
+        DB::unprepared(file_get_contents(__DIR__ . '/cities.sql'));
 
         $json = __DIR__ . '/categories.json';
         $file = file_get_contents($json);

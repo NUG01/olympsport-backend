@@ -14,6 +14,8 @@ Route::prefix('admin')->group(function () {
         Route::post('/users/status', 'setStatus')->name('admin.users.status');
         Route::delete('/users/delete/{user}', 'destroy')->name('admin.users.destroy');
         Route::post('/users/edit/{user}', 'update')->name('admin.users.edit');
+        Route::post('/users/cities', 'searchCities')->name('admin.users.search.cities');
+        Route::get('/users/city/{city}', 'getCity')->name('admin.users.city');
     });
 
 

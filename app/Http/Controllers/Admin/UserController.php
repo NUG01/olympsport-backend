@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\EditUserRequest;
 use App\Http\Resources\Admin\UserResource;
+use App\Models\City;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -38,5 +39,16 @@ class UserController extends Controller
         $verified ?  $user->email_verified_at = null : $user->email_verified_at = now();
         $user->save();
         return response()->noContent();
+    }
+
+    public function searchCities(Request $request)
+    {
+        $cities = City::where('city_name', 'like',  $request->city_name . '%')->get(['id', 'city_name']);
+        return response()->json($cities);
+    }
+
+    public function getCity(City $city)
+    {
+        return response()->json($city);
     }
 }
