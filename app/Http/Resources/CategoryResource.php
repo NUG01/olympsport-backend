@@ -13,15 +13,15 @@ class CategoryResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'slug' => $this->slug,
-            'children' => $this->when($this->children !== null, function () use ($request) {
+            'children' => $this->when($this->id !== null, function () use ($request) {
                 if ($request->routeIs('categories.index')) {
                     return $this->whenLoaded('children');
                 } elseif ($request->routeIs('categories.show')) {
                     return $this->children;
-                } elseif ($request->routeIs('admin.categories.index')) {
-                    return $this->children->count();
-                } elseif ($request->routeIs('admin.categories.show')){
+                } elseif ($request->routeIs('admin.categories.show')) {
                     return $this->children;
+                } else {
+                    return null;
                 }
             }),
         ];

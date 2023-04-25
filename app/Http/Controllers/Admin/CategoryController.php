@@ -11,13 +11,14 @@ use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class CategoryController extends Controller
 {
-    public function index(): AnonymousResourceCollection
+    public function index()
     {
-        return CategoryResource::collection(Cache::remember('categories', 60 * 60 * 24, function () {
-            return Category::whereNull('parent_id')->get();
+        return CategoryResource::collection(Cache::remember('admin_categories', 60 * 60 * 24, function () {
+            return Category::all();
         }));
     }
 
@@ -28,9 +29,9 @@ class CategoryController extends Controller
 
     public function show(Category $category): CategoryResource
     {
-        return CategoryResource::make(Cache::remember('category_show', 60 * 60 * 24, function () use ($category) {
-            return $category->loadMissing(['products', 'children' => function ($query) {
-                $query->with('children', 'products');
+        return CategoryResource::make(Cache::remember('admin_category_show', 60 * 60 * 24, function () use ($category) {
+            return $category->loadMissing(['children' => function ($query) {
+                $query->with('children');
             }]);
         }));
     }
@@ -49,7 +50,6 @@ class CategoryController extends Controller
 
     public function search(Request $request)
     {
-
         $categories = Category::where('name', 'like', '%' . $request->city_name . '%')->get();
         return response()->json(['data' => $categories]);
     }
