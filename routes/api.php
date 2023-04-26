@@ -16,7 +16,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::controller(CategoryController::class)->group(function () {
     Route::get('/categories', 'index')->name('categories.index');
-    Route::get('/category/{category:id}', 'show')->name('categories.show');
+    Route::get('/category/{category}', 'show')->name('categories.show');
 });
 
 Route::controller(BrandController::class)->group(function () {

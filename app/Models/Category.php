@@ -30,10 +30,10 @@ class Category extends Model
         'parent_id',
     ];
 
-    // public function getRouteKeyName(): string
-    // {
-    //     return 'id';
-    // }
+     public function getRouteKeyName(): string
+     {
+         return 'slug';
+     }
 
     public function parent(): BelongsTo
     {

@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -13,6 +14,9 @@ class CategoryResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'slug' => $this->slug,
+            'parent' => $this->when($this->parent_id !== null, function () {
+                return Category::where('id', $this->parent_id)->first();
+            }),
             'children' => $this->when($this->children !== null, function () use ($request) {
                 if ($request->routeIs('categories.index')) {
                     return $this->whenLoaded('children');

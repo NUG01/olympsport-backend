@@ -23,8 +23,8 @@ Route::prefix('admin')->group(function () {
         Route::get('/categories', 'index')->name('admin.categories.index');
         Route::post('/category/store/{category?}', 'store')->name('admin.categories.store');
         Route::get('/category/{category:id}', 'show')->name('admin.categories.show');
-        Route::patch('/category/update/{category}', 'update')->name('admin.categories.update');
-        Route::delete('/category/delete/{category}', 'destroy')->name('admin.categories.destroy');
+        Route::patch('/category/update/{category:id}', 'update')->name('admin.categories.update');
+        Route::delete('/category/delete/{category:id}', 'destroy')->name('admin.categories.destroy');
         Route::post('/category/search', 'search')->name('admin.categories.search');
     });
 
@@ -37,7 +37,7 @@ Route::prefix('admin')->group(function () {
 
     Route::controller(ProductController::class)->group(function () {
         Route::get('/products', 'index')->name('admin.products.index');
-        Route::get('/product/{product}', 'show')->name('admin.products.show');
+        Route::get('/product/{product:id}', 'show')->name('admin.products.show');
         Route::patch('/product/update/{product}', 'update')->name('admin.products.update');
         Route::delete('/product/delete/{product}', 'destroy')->name('admin.products.destroy');
     });

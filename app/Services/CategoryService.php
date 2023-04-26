@@ -32,14 +32,7 @@ class CategoryService
     public function update(Category $category, CategoryRequest $request): CategoryResource
     {
         $validated = $request->validated();
-
-        if ($request->parent_id !== null) {
-            $parent_id = match ($category->parent_id) {
-                null => json_decode($request->parent_id),
-                default => array_merge($category->parent_id, json_decode($request->parent_id, true))
-            };
-            $validated['parent_id'] = $parent_id;
-        }
+        $validated['parent_id']= $request->parent_id;
 
         $slug = str_slug(preg_replace("/[\s-]+/", "_", $request->name), '_');
 
