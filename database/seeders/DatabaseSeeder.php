@@ -42,20 +42,6 @@ class DatabaseSeeder extends Seeder
             'verification_code' => sha1(time()),
             'role' => Role::SEEKER->value,
             'city' => 1,
-            'stripe_id' => 'cus_NafCJZeLv7C0RZ',
-            'email_verified_at' => now(),
-        ]);
-
-        $user2 = \App\Models\User::factory()->create([
-            'first_name' => 'Seeker',
-            'last_name' => 'Seekeriani',
-            'username' => 'seeker',
-            'email' => 'seeker@gmail.com',
-            'phone_number' => '+995 555 555 555',
-            'password' => bcrypt('Seeker123'),
-            'verification_code' => sha1(time()),
-            'role' => Role::SEEKER->value,
-            'city' => 1,
             'stripe_id' => 'cus_Ngbua1uv8oXu5f',
             'email_verified_at' => now(),
         ]);
