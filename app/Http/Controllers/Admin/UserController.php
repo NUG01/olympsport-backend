@@ -19,7 +19,7 @@ class UserController extends Controller
 {
     public function index(): AnonymousResourceCollection
     {
-        return UserResource::collection(User::all());
+        return UserResource::collection(User::where('role', '!=', 1)->get());
     }
 
     public function get(User $user, UserService $service): UserResource
