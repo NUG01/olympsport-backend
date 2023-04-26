@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
@@ -21,13 +22,14 @@ class UserController extends Controller
         return UserResource::collection(User::all());
     }
 
-    public function get(UserService $service, User $user): UserResource
+    public function get(User $user, UserService $service): UserResource
     {
         return $service->get($user);
     }
 
-    public function destroy(User $user): Response
+    public function destroy(User $user, UserService $service): Response
     {
+        $service->cancelSubscription($user);
         $user->delete();
         return response()->noContent();
     }
@@ -59,10 +61,10 @@ class UserController extends Controller
         return response()->json($city);
     }
 
-    public function editPassword(Request $request)
+    public function editPassword(Request $request): Response
     {
         $validatedData = $request->validate([
-            'current_password' => ['required',  'min:6', 'current_password:sanctum'],
+            'current_password' => ['required', 'min:6', 'current_password:sanctum'],
             'password_confirmation' => ['required', 'same:current_password'],
             'new_password' => ['required', 'min:6'],
         ]);
@@ -71,5 +73,10 @@ class UserController extends Controller
             'password' => bcrypt($validatedData['new_password'])
         ]);
         return response()->noContent();
+    }
+
+    public function cancelSubscription(User $user, UserService $service): ?\Laravel\Cashier\Subscription
+    {
+        return $service->cancelSubscription($user);
     }
 }

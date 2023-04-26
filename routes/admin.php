@@ -19,6 +19,7 @@ Route::prefix('admin')->middleware(['auth', 'is_admin'])->group(function () {
         Route::post('/users/cities', 'searchCities')->name('admin.users.search.cities');
         Route::get('/users/city/{city}', 'getCity')->name('admin.users.city');
         Route::post('/password/update', 'editPassword')->name('admin.password.update');
+        Route::post('/cancel_subscription', 'cancelSubscription')->name('admin.user.cancel.subscription');
     });
 
     Route::controller(CategoryController::class)->group(function () {
