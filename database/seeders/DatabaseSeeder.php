@@ -32,6 +32,19 @@ class DatabaseSeeder extends Seeder
             'stripe_id' => 'cus_NafCJZeLv7C0RZ',
             'email_verified_at' => now(),
         ]);
+        $user2 = \App\Models\User::factory()->create([
+            'first_name' => 'user',
+            'last_name' => 'useriani',
+            'username' => 'usera96',
+            'email' => 'user@gmail.com',
+            'phone_number' => '+995 555 123 456',
+            'password' => bcrypt('User123'),
+            'verification_code' => sha1(time()),
+            'role' => Role::SEEKER->value,
+            'city' => 1,
+            'stripe_id' => 'cus_NafCJZeLv7C0RZ',
+            'email_verified_at' => now(),
+        ]);
 
         DB::unprepared(file_get_contents(__DIR__ . '/cities.sql'));
 

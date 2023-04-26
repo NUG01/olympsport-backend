@@ -23,10 +23,12 @@ class UserResource extends JsonResource
             'last_name' => $this->last_name,
             'username' => $this->username,
             'email' => $this->email,
+            'phone_number' => $this->phone_number,
+            'address' => $this->address,
             'verified' => $this->email_verified_at ? true : false,
             'subscription' => $this->when($this->stripe_id !== null, function () use ($request) {
-                $plan = User::findOrFail($this->id)->subscriptions()->get()[0]['stripe_price'];
-                if ($request->routeIs('admin.users.get')) {
+                if ($request->routeIs('admin.users.get') && $request->user()->stripe_id !== null) {
+                    $plan = User::findOrFail($this->id)->subscriptions()->get()[0]['stripe_price'];
                     $canceled_at = $this->extra->intervals['plan']['cancel_at_period_end'];
                     if ($canceled_at === null || $canceled_at === false) {
                         foreach ($this->extra->dates['lines']['data'] as $item) {
@@ -37,7 +39,7 @@ class UserResource extends JsonResource
                                 ],
                                 'period' => ucfirst($this->extra->intervals['plan']['interval']),
                                 'name' => User::findOrFail($this->id)->subscriptions()->get()[0]['name'],
-                                'cost' => Plan::where('stripe_plan', $plan)->value('cost'). ' CHF',
+                                'cost' => Plan::where('stripe_plan', $plan)->value('cost') . ' CHF',
                             ];
                         }
                     } else {
