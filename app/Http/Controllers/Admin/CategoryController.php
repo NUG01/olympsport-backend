@@ -18,7 +18,7 @@ class CategoryController extends Controller
     public function index(): AnonymousResourceCollection
     {
         return CategoryResource::collection(Cache::remember('admin_categories', 60 * 60 * 24, function () {
-            return Category::all();
+            return Category::with('children.children')->whereNull('parent_id')->get();
         }));
     }
 

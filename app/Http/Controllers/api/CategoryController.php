@@ -13,7 +13,7 @@ class CategoryController extends Controller
     public function index(): AnonymousResourceCollection
     {
         return CategoryResource::collection(
-            Category::with(['children.children', 'products'])->whereNull('parent_id')->get()
+            Category::with(['children', 'products'])->whereNull('parent_id')->get()
         );
     }
 
