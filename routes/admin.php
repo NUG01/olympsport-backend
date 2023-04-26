@@ -43,7 +43,7 @@ Route::prefix('admin')->middleware(['auth', 'is_admin'])->group(function () {
     });
 
     Route::controller(WebsiteAssetController::class)->group(function () {
-        Route::get('/terms_and_conditions', 'aboutUs')->name('admin.terms_and_conditions');
+        Route::get('/terms_and_conditions', 'termsAndConditions')->name('admin.terms_and_conditions');
         Route::get('/about_us', 'aboutUs')->name('admin.about_us');
         Route::patch('/update/website_assets/{id}', 'update')->name('admin.update.website_assets');
     });
