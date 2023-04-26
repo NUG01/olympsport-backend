@@ -27,7 +27,7 @@ class EditUserRequest extends FormRequest
             'username' => 'required|string',
             'phone_number' => 'required',
             'city' => 'required|integer',
-            'address' => 'required',
+            'address' => 'sometimes',
         ];
     }
 }

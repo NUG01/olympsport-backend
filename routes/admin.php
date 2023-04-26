@@ -1,6 +1,7 @@
 <?php
 
-use App\Http\Controllers\Admin\{CategoryController,
+use App\Http\Controllers\Admin\{
+    CategoryController,
     UserController as AdminUserController,
     WebsiteAssetController,
     BrandController,
@@ -17,6 +18,7 @@ Route::prefix('admin')->middleware(['auth', 'is_admin'])->group(function () {
         Route::post('/users/edit/{user}', 'update')->name('admin.users.edit');
         Route::post('/users/cities', 'searchCities')->name('admin.users.search.cities');
         Route::get('/users/city/{city}', 'getCity')->name('admin.users.city');
+        Route::post('/password/update', 'editPassword')->name('admin.password.update');
     });
 
     Route::controller(CategoryController::class)->group(function () {

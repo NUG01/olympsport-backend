@@ -8,6 +8,7 @@ use App\Http\Resources\Admin\UserResource;
 use App\Models\City;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -50,5 +51,19 @@ class UserController extends Controller
     public function getCity(City $city)
     {
         return response()->json($city);
+    }
+
+    public function editPassword(Request $request)
+    {
+        $validatedData = $request->validate([
+            'current_password' => ['required',  'min:6', 'current_password:sanctum'],
+            'password_confirmation' => ['required', 'same:current_password'],
+            'new_password' => ['required', 'min:6'],
+        ]);
+
+        Auth::user()->update([
+            'password' => bcrypt($validatedData['new_password'])
+        ]);
+        return response()->noContent();
     }
 }
