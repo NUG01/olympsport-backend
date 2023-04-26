@@ -12,17 +12,16 @@ class CategoryController extends Controller
 {
     public function index(): AnonymousResourceCollection
     {
-        return CategoryResource::collection(
-            Category::with(['children', 'products'])->whereNull('parent_id')->get()
-        );
+        return CategoryResource::collection(Cache::remember('categories', 60 * 60 * 24, function () {
+            return Category::with(['children', 'products'])->whereNull('parent_id')->get();
+        }));
     }
 
     public function show(Category $category): CategoryResource
     {
-        return CategoryResource::make(Cache::remember('category_show', 60 * 60 * 24, function () use ($category) {
-            return $category->loadMissing(['products', 'children' => function ($query) {
-                $query->with('children', 'products');
-            }]);
-        }));
+        return CategoryResource::make($category->loadMissing(['products', 'children' => function ($query) {
+            $query->with('children', 'products');
+        }])
+        );
     }
 }

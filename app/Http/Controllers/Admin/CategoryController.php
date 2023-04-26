@@ -18,7 +18,9 @@ class CategoryController extends Controller
     public function index(): AnonymousResourceCollection
     {
         return CategoryResource::collection(Cache::remember('admin_categories', 60 * 60 * 24, function () {
-            return Category::with('children.children')->whereNull('parent_id')->get();
+            return Category::with(['children.children' => function ($query) {
+                $query->with('products');
+            }], 'products')->whereNull('parent_id')->get();
         }));
     }
 
@@ -29,11 +31,10 @@ class CategoryController extends Controller
 
     public function show(Category $category): CategoryResource
     {
-        return CategoryResource::make(Cache::remember('admin_category_show', 60 * 60 * 24, function () use ($category) {
-            return $category->loadMissing(['children' => function ($query) {
-                $query->with('children');
-            }]);
-        }));
+        return CategoryResource::make($category->loadMissing(['children' => function ($query) {
+            $query->with('children');
+        }])
+        );
     }
 
     public function update(Category $category, CategoryRequest $request, CategoryService $service): CategoryResource
@@ -50,7 +51,7 @@ class CategoryController extends Controller
 
     public function search(Request $request): JsonResponse
     {
-        $categories = Category::where('name', 'like', '%' . $request->name . '%')->orWhere('slug', 'like', '%'. $request->name .'%')->get();
+        $categories = Category::where('name', 'like', '%' . $request->name . '%')->orWhere('slug', 'like', '%' . $request->name . '%')->get();
         return response()->json(['data' => $categories]);
     }
 }

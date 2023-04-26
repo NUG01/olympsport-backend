@@ -2,7 +2,6 @@
 
 namespace App\Http\Resources;
 
-use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -20,7 +19,7 @@ class CategoryResource extends JsonResource
                 } elseif ($request->routeIs('categories.show')) {
                     return $this->children;
                 } else {
-                    return $this->whenLoaded('children');
+                    return $this->children;
                 }
             }),
         ];
