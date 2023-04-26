@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\enums\Role;
 use App\Models\Category;
 use App\Models\Plan;
 use Illuminate\Database\Seeder;
@@ -24,6 +25,8 @@ class DatabaseSeeder extends Seeder
             'email' => 'admin@gmail.com',
             'phone_number' => '+995 555 555 555',
             'password' => bcrypt('Admin123'),
+            'verification_code' => sha1(time()),
+            'role' => Role::ADMIN->value,
             'city' => 1,
             'email_verified_at' => now(),
         ]);
@@ -41,19 +44,6 @@ class DatabaseSeeder extends Seeder
                 'parent_id' => $item->parent_id,
             ]);
         }
-
-        Plan::create([
-            'name' => 'default plan',
-            'slug' => 'default-plan',
-            'stripe_plan' => 'price_1MyAszBhh6cLMIbZRfNXpUl1',
-            'price' => 10,
-        ]);
-        Plan::create([
-            'name' => 'bussiness plan',
-            'slug' => 'bussiness-plan',
-            'stripe_plan' => 'price_1MyAszBhh6cLMIbZ2zk5uuqf',
-            'price' => 20,
-        ]);
 
         DB::table('website_assets')->insert(['website_text' => 'terms and conditions']);
         DB::table('website_assets')->insert(['website_text' => 'about us']);

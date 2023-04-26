@@ -8,7 +8,7 @@ use App\Http\Controllers\Admin\{CategoryController,
 };
 use Illuminate\Support\Facades\Route;
 
-Route::prefix('admin')->group(function () {
+Route::prefix('admin')->middleware(['auth', 'is_admin'])->group(function () {
     Route::controller(AdminUserController::class)->group(function () {
         Route::get('/users', 'index')->name('admin.users.index');
         Route::get('/users/{user}', 'get')->name('admin.users.get');
