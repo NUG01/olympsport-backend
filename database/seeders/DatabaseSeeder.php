@@ -6,6 +6,7 @@ namespace Database\Seeders;
 use App\enums\Role;
 use App\Models\Category;
 use App\Models\Plan;
+use App\Models\Subscription;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -18,7 +19,7 @@ class DatabaseSeeder extends Seeder
     {
         // \App\Models\User::factory(10)->create();
 
-        \App\Models\User::factory()->create([
+        $user = \App\Models\User::factory()->create([
             'first_name' => 'admin',
             'last_name' => 'adminiani',
             'username' => 'admina69',
@@ -28,6 +29,7 @@ class DatabaseSeeder extends Seeder
             'verification_code' => sha1(time()),
             'role' => Role::ADMIN->value,
             'city' => 1,
+            'stripe_id' => 'cus_NafCJZeLv7C0RZ',
             'email_verified_at' => now(),
         ]);
 
@@ -44,6 +46,34 @@ class DatabaseSeeder extends Seeder
                 'parent_id' => $item->parent_id,
             ]);
         }
+
+        Subscription::create([
+            'user_id' => $user->id,
+            'name' => 'Online TOTAL!',
+            'stripe_id' => 'sub_1MpTs9LLLxBR1G3Rjc8L1paS',
+            'stripe_status' => 'active',
+            'stripe_price' => 'plan_N6MOhmJUwOIRQK',
+            'quantity' => 1,
+        ]);
+
+        Plan::create([
+            'id' => 1,
+            'name' => 'Online TOTAL!',
+            'duration' => 7,
+            'cost' => 29.0,
+            'interval' => 'week',
+            'sale' => null,
+            'details' => 'Entraînements illimités, Comprendre, Lire/Écrire & Parler, Apprenez grâce aux Corrections',
+            'stripe_plan' => 'plan_N6MOhmJUwOIRQK',
+        ]);
+
+        DB::table('subscription_items')->insert([
+            'subscription_id' => 1,
+            'stripe_id' => 'si_NafCrfqls132Qf',
+            'stripe_product' => 'prod_N6MODz7wBzQJKT',
+            'stripe_price' => 'plan_N6MOhmJUwOIRQK',
+            'quantity' => 1,
+        ]);
 
         DB::table('website_assets')->insert(['website_text' => 'terms and conditions']);
         DB::table('website_assets')->insert(['website_text' => 'about us']);

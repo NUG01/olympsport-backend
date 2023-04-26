@@ -1,10 +1,11 @@
 <?php
 
-use App\Http\Controllers\Admin\WebsiteAssetController;
-use App\Http\Controllers\api\BrandController;
-use App\Http\Controllers\api\CategoryController;
-use App\Http\Controllers\api\PlanController;
-use App\Http\Controllers\api\ProductController;
+use App\Http\Controllers\{Admin\WebsiteAssetController,
+    api\BrandController,
+    api\CategoryController,
+    api\SubscriptionController,
+    api\ProductController,
+};
 use App\Http\Resources\CityResource;
 use App\Models\City;
 use Illuminate\Http\Request;
@@ -24,7 +25,7 @@ Route::controller(BrandController::class)->group(function () {
     Route::get('/brand/{brand}', 'show')->name('brands.show');
 });
 
-Route::get('/cities', fn () => CityResource::collection(City::all()));
+Route::get('/cities', fn() => CityResource::collection(City::all()));
 
 Route::controller(ProductController::class)->group(function () {
     Route::get('/products', 'index')->name('products.index');
@@ -35,13 +36,16 @@ Route::controller(ProductController::class)->group(function () {
 });
 
 Route::controller(WebsiteAssetController::class)->group(function () {
-    Route::get('/about_us', 'aboutUs')->name('admin.about_us');
-    Route::get('/terms_and_conditions', 'aboutUs')->name('admin.terms_and_conditions');
+    Route::get('/about_us', 'aboutUs')->name('about_us');
+    Route::get('/terms_and_conditions', 'aboutUs')->name('terms_and_conditions');
 });
 
-Route::get('/product_assets', fn () => response()->json(config('product-assets')));
+Route::controller(SubscriptionController::class)->group(function () {
+    Route::post('/subscribe', 'subscribe')->name('subscription');
+    Route::get('/user_intent', 'userIntent/{plan}')->name('user-intent');
+});
 
-Route::post('subscription', [PlanController::class, 'subscription'])->name('subscription');
+Route::get('/product_assets', fn() => response()->json(config('product-assets')));
 
 require_once __DIR__ . '/./auth.php';
 require_once __DIR__ . '/./admin.php';

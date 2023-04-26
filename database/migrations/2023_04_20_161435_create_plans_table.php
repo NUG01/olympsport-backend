@@ -14,9 +14,12 @@ return new class extends Migration
         Schema::create('plans', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('slug');
+            $table->integer('duration');
+            $table->float('cost');
+            $table->string('interval');
+            $table->integer('sale')->nullable();
+            $table->text('details');
             $table->string('stripe_plan');
-            $table->decimal('price');
             $table->timestamps();
         });
     }
