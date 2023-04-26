@@ -50,7 +50,7 @@ class CategoryController extends Controller
 
     public function search(Request $request): JsonResponse
     {
-        $categories = Category::where('name', 'like', '%' . $request->city_name . '%')->get();
+        $categories = Category::where('name', 'like', '%' . $request->name . '%')->orWhere('slug', 'like', '%'. $request->name .'%')->get();
         return response()->json(['data' => $categories]);
     }
 }
