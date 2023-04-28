@@ -6,6 +6,7 @@ use App\Traits\Uuid;
 use DateTimeInterface;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Staudenmeir\EloquentJsonRelations\HasJsonRelationships;
 
 class Product extends Model
@@ -38,5 +39,9 @@ class Product extends Model
     public function categories(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(Category::class, 'id', 'category_id');
+    }
+    public function brand(): BelongsTo
+    {
+        return $this->BelongsTo(Brand::class);
     }
 }

@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use App\enums\Role;
+use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Plan;
 use App\Models\Subscription;
@@ -60,6 +61,16 @@ class DatabaseSeeder extends Seeder
             ]);
         }
 
+        Brand::create([
+            'name' => 'kajila',
+            'slug' => str_slug('kajila', '_'),
+            'category_id' => 1,
+        ]);
+        Brand::create([
+            'name' => 'abidas',
+            'slug' => str_slug('abidas', '_'),
+            'category_id' => 2,
+        ]);
         Subscription::create([
             'user_id' => $user1->id,
             'name' => 'Online TOTAL!',

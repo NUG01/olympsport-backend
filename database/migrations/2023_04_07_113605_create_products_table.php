@@ -4,7 +4,8 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration {
+return new class extends Migration
+{
     /**
      * Run the migrations.
      */
@@ -18,7 +19,7 @@ return new class extends Migration {
             $table->text('description');
             $table->json('color')->nullable();
             $table->string('size')->nullable();
-            $table->integer('brand')->nullable();
+            $table->foreignId('brand_id')->nullable();
             $table->tinyInteger('boosted')->default(0);
             $table->datetimes();
         });

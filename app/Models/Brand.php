@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Staudenmeir\EloquentJsonRelations\HasJsonRelationships;
 
 class Brand extends Model
@@ -35,9 +36,9 @@ class Brand extends Model
         return $this->belongsToJson(Category::class, 'category_id', 'id');
     }
 
-    public function products(): \Staudenmeir\EloquentJsonRelations\Relations\HasManyJson
+    public function products(): HasMany
     {
-        return $this->hasManyJson(Product::class, 'id', 'product_id');
+        return $this->HasMany(Product::class);
     }
 
     public static function boot()
