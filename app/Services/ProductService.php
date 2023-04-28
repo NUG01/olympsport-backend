@@ -5,11 +5,29 @@ namespace App\Services;
 use App\Http\Requests\ProductRequest;
 use App\Http\Resources\ProductResource;
 use App\Models\Product;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 
 class ProductService
 {
-    public function create(ProductRequest $request): \App\Http\Resources\ProductResource
+    public function index($token = null): AnonymousResourceCollection
+    {
+        if (Auth::user()) $token = Auth::user()->id;
+
+        return ProductResource::customCollection(Cache::remember('products', 60 * 60 * 24, function () {
+            return Product::with(['user', 'photos', 'categories', 'favorite'])->orderBy('boosted', 'DESC')->latest()->get();
+        }), $token);
+    }
+
+    public function show(Product $product, $token = null): ProductResource
+    {
+        if (Auth::user()) $token = Auth::user()->id;
+
+        return ProductResource::customMake($product->load(['categories', 'user', 'photos']), $token);
+    }
+
+    public function create(ProductRequest $request): ProductResource
     {
         $photos = $request->file('photos')->store('product_images');
 

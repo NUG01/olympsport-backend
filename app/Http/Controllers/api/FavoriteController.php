@@ -6,11 +6,13 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\ProductResource;
 use App\Models\Favorite;
 use App\Models\Product;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\Auth;
 
 class FavoriteController extends Controller
 {
-    public function addRemoveFavorite($productId, $token = null)
+    public function addRemoveFavorite($productId, $token = null): JsonResponse
     {
         if (Auth::user()) $token = Auth::user()->id;
 
@@ -26,15 +28,17 @@ class FavoriteController extends Controller
             'user_id' => $token,
             'product_id' => $productId
         ]);
+
         return response()->json('Created!');
     }
 
 
-    public function index($token = null)
+    public function index($token = null): AnonymousResourceCollection
     {
         if (Auth::user()) $token = Auth::user()->id;
         $favoriteProductIds = Favorite::where('user_id', $token)->pluck('product_id')->toArray();
         $favoriteProducts = Product::whereIn('id', $favoriteProductIds)->get();
+
         return ProductResource::collection($favoriteProducts);
     }
 }

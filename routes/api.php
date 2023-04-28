@@ -31,9 +31,9 @@ Route::controller(BrandController::class)->group(function () {
 Route::get('/cities', fn () => CityResource::collection(City::all()));
 
 Route::controller(ProductController::class)->group(function () {
-    Route::get('/products', 'index')->name('products.index');
+    Route::get('/products/{token?}', 'index')->name('products.index');
     Route::post('/product/store', 'store')->name('products.store');
-    Route::get('/product/{product}', 'show')->name('products.show');
+    Route::get('/product/{product}/{token?}', 'show')->name('products.show');
     Route::patch('/product/update/{product}', 'update')->name('products.update');
     Route::delete('/product/delete/{product}', 'destroy')->name('products.destroy');
 });
