@@ -13,7 +13,7 @@ class BrandResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'slug' => $this->slug,
-            'categories' => $this->when($this->id !== null, function () use ($request) {
+            'category_id' => $this->when($this->id !== null, function () use ($request) {
                 if ($request->routeIs('admin.brands.index')) {
                     return $this->categories->count();
                 } elseif ($request->routeIs('admin.brands.show')) {
@@ -22,15 +22,15 @@ class BrandResource extends JsonResource
                     return $this->categories;
                 }
             }),
-            'products' => $this->when($this->id !== null, function () use ($request) {
-                if ($request->routeIs('admin.brands.index')) {
-                    return $this->products->count();
-                } elseif ($request->routeIs('admin.brands.show')) {
-                    return $this->products;
-                } else {
-                    return $this->products;
-                }
-            }),
+            // 'products' => $this->when($this->id !== null, function () use ($request) {
+            //     if ($request->routeIs('admin.brands.index')) {
+            //         return $this->products->count();
+            //     } elseif ($request->routeIs('admin.brands.show')) {
+            //         return $this->products;
+            //     } else {
+            //         return $this->products;
+            //     }
+            // }),
         ];
     }
 }
