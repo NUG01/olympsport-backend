@@ -4,11 +4,14 @@ namespace App\Http\Resources;
 
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Config;
 
 class ProductResource extends JsonResource
 {
+    private static mixed $token = null;
+
     public function toArray(Request $request): array
     {
         return [
@@ -31,7 +34,29 @@ class ProductResource extends JsonResource
             }),
             'owner' => $this->user,
             'photos' => $this->photos,
-            'boosted' => $this->boosted
+            'boosted' => $this->boosted,
+            'favorite' => $this->when($this->favorite, function () {
+                if ($this->favorite->count() !== 0) {
+                    foreach ($this->favorite as $favorite) {
+                        if ($favorite->user_id !== self::$token) return false;
+                    }
+                    return true;
+                }
+
+                return false;
+            }),
         ];
+    }
+
+    public static function customCollection($resource, $data): AnonymousResourceCollection
+    {
+        self::$token = $data;
+        return parent::collection($resource);
+    }
+
+    public static function customMake($resource, $data): ProductResource
+    {
+        self::$token = $data;
+        return parent::make($resource);
     }
 }
