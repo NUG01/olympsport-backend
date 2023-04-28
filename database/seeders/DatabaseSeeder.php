@@ -83,7 +83,7 @@ class DatabaseSeeder extends Seeder
         Subscription::create([
             'user_id' => $user2->id,
             'name' => 'Online TOTAL!',
-            'stripe_id' => 'sub_1MpTs9LLLxBR1G3Rjc8L1paS',
+            'stripe_id' => 'sub_1MpTs9LLLxBR1G3Rjc8L1pa',
             'stripe_status' => 'active',
             'stripe_price' => 'plan_N6MOhmJUwOIRQK',
             'quantity' => 1,
@@ -110,7 +110,7 @@ class DatabaseSeeder extends Seeder
 
         DB::table('subscription_items')->insert([
             'subscription_id' => 2,
-            'stripe_id' => 'si_NafCrfqls132Qf',
+            'stripe_id' => 'si_NafCrfqls132Q',
             'stripe_product' => 'prod_N6MODz7wBzQJKT',
             'stripe_price' => 'plan_N6MOhmJUwOIRQK',
             'quantity' => 1,
