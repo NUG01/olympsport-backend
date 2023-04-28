@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Traits\Uuid;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticate;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -58,5 +59,9 @@ class User extends Authenticate implements MustVerifyEmail
     public function products(): HasManyJson
     {
         return $this->hasManyJson(Product::class, 'id', 'product_id');
+    }
+    public function favorites(): HasMany
+    {
+        return $this->HasMany(Favorite::class, 'id', 'product_id');
     }
 }

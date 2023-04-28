@@ -1,11 +1,14 @@
 <?php
 
-use App\Http\Controllers\{Admin\WebsiteAssetController,
+use App\Http\Controllers\{
+    Admin\WebsiteAssetController,
     api\BrandController,
     api\CategoryController,
     api\SubscriptionController,
     api\ProductController,
+    api\FavoriteController
 };
+
 use App\Http\Resources\CityResource;
 use App\Models\City;
 use Illuminate\Http\Request;
@@ -25,7 +28,7 @@ Route::controller(BrandController::class)->group(function () {
     Route::get('/brand/{brand}', 'show')->name('brands.show');
 });
 
-Route::get('/cities', fn() => CityResource::collection(City::all()));
+Route::get('/cities', fn () => CityResource::collection(City::all()));
 
 Route::controller(ProductController::class)->group(function () {
     Route::get('/products', 'index')->name('products.index');
@@ -45,7 +48,12 @@ Route::controller(SubscriptionController::class)->group(function () {
     Route::get('/user_intent', 'userIntent/{plan}')->name('user-intent');
 });
 
-Route::get('/product_assets', fn() => response()->json(config('product-assets')));
+Route::controller(FavoriteController::class)->group(function () {
+    Route::get('/favorite-products/{token?}', 'index')->name('favorite.index');
+    Route::post('/favorite/{productId}/{token?}', 'addRemoveFavorite')->name('favorite.addRemoveFavorite');
+});
+
+Route::get('/product_assets', fn () => response()->json(config('product-assets')));
 
 require_once __DIR__ . '/./auth.php';
 require_once __DIR__ . '/./admin.php';
