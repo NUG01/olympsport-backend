@@ -4,6 +4,8 @@ namespace App\Services;
 
 use App\Http\Requests\ProductRequest;
 use App\Http\Resources\ProductResource;
+use App\Models\Brand;
+use App\Models\BrandProducts;
 use App\Models\Product;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\Auth;
@@ -59,5 +61,14 @@ class ProductService
         $product->update($request->validated());
 
         return ProductResource::make($product);
+    }
+
+    public function byBrand(Brand $brand, $token = null): AnonymousResourceCollection
+    {
+        if (Auth::user()) $token = Auth::user()->id;
+
+        $ids = BrandProducts::with('products')->where('brand_id', $brand->id)->pluck('product_id');
+
+        return ProductResource::customCollection(Product::whereIn('id', $ids)->with('brand')->get(), $token);
     }
 }

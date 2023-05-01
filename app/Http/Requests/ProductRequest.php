@@ -20,7 +20,7 @@ class ProductRequest extends FormRequest
             'state' => 'required|integer',
             'description' => 'required',
             'color' => 'sometimes',
-            'brand' => 'required',
+            'brand_id' => 'required',
             'size' => 'sometimes',
             'boosted' => 'sometimes',
         ];

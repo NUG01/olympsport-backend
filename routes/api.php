@@ -28,7 +28,7 @@ Route::controller(BrandController::class)->group(function () {
     Route::get('/brand/{brand}', 'show')->name('brands.show');
 });
 
-Route::get('/cities', fn () => CityResource::collection(City::all()));
+Route::get('/cities', fn() => CityResource::collection(City::all()));
 
 Route::controller(ProductController::class)->group(function () {
     Route::get('/products/{token?}', 'index')->name('products.index');
@@ -36,6 +36,7 @@ Route::controller(ProductController::class)->group(function () {
     Route::get('/product/{product}/{token?}', 'show')->name('products.show');
     Route::patch('/product/update/{product}', 'update')->name('products.update');
     Route::delete('/product/delete/{product}', 'destroy')->name('products.destroy');
+    Route::get('/products/by_brands/{brand}/{token?}', 'byBrand')->name('products.byBrand');
 });
 
 Route::controller(WebsiteAssetController::class)->group(function () {
@@ -53,7 +54,7 @@ Route::controller(FavoriteController::class)->group(function () {
     Route::post('/favorite/{productId}/{token?}', 'addRemoveFavorite')->name('favorite.addRemoveFavorite');
 });
 
-Route::get('/product_assets', fn () => response()->json(config('product-assets')));
+Route::get('/product_assets', fn() => response()->json(config('product-assets')));
 
 require_once __DIR__ . '/./auth.php';
 require_once __DIR__ . '/./admin.php';

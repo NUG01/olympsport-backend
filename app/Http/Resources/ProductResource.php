@@ -32,6 +32,7 @@ class ProductResource extends JsonResource
                     return Config::get('product-assets.sizes')[$explode[1]];
                 }
             }),
+            'brand' => $this->brand,
             'owner' => $this->user,
             'photos' => $this->photos,
             'boosted' => $this->boosted,
