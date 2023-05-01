@@ -9,7 +9,7 @@ use App\Http\Controllers\Admin\{
 };
 use Illuminate\Support\Facades\Route;
 
-Route::prefix('admin')->middleware(['auth', 'is_admin'])->group(function () {
+Route::prefix('admin')->middleware(['is_admin'])->group(function () {
     Route::controller(AdminUserController::class)->group(function () {
         Route::get('/users', 'index')->name('admin.users.index');
         Route::get('/users/{user}', 'get')->name('admin.users.get');
@@ -32,10 +32,12 @@ Route::prefix('admin')->middleware(['auth', 'is_admin'])->group(function () {
     });
 
     Route::controller(BrandController::class)->group(function () {
-        Route::get('/brands', 'index')->name('admin,brands.index');
+        Route::get('/brands', 'index')->name('admin.brands.index');
         Route::post('/brand/store', 'store')->name('admin.brands.store');
-        Route::patch('/brand/update/{brand}', 'update')->name('admin.brands.update');
-        Route::delete('/brand/delete/{brand}', 'delete')->name('admin.brands.delete');
+        Route::patch('/brand/update/{brand:id}', 'update')->name('admin.brands.update');
+        Route::post('/brand/category_list/{brand:id}', 'showCategoryList')->name('admin.brands.categoryList');
+        Route::patch('/brand/remove_category/{brand:id}/{id}', 'removeCategory')->name('admin.brands.removeCategory');
+        Route::delete('/brand/delete/{brand:id}', 'delete')->name('admin.brands.delete');
     });
 
     Route::controller(ProductController::class)->group(function () {
