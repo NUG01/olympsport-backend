@@ -17,10 +17,11 @@ class BrandRequest extends FormRequest
         return [
             'name' => [
                 'required',
+                Rule::unique('brands', 'name')->ignore($this->brand),
                 Rule::unique('brands', 'slug')->ignore($this->brand),
 
             ],
-            'category_id' => 'required',
+            'category_id' => 'sometimes',
         ];
     }
 }

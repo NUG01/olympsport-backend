@@ -19,7 +19,6 @@ class Brand extends Model
         'name',
         'slug',
         'category_id',
-        'product_id',
     ];
 
     protected $casts = [
