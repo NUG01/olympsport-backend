@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Staudenmeir\EloquentJsonRelations\HasJsonRelationships;
+use Staudenmeir\EloquentJsonRelations\Relations\BelongsToJson;
 
 class Brand extends Model
 {
@@ -28,7 +29,7 @@ class Brand extends Model
         return 'slug';
     }
 
-    public function categories(): \Staudenmeir\EloquentJsonRelations\Relations\BelongsToJson
+    public function categories(): BelongsToJson
     {
         return $this->belongsToJson(Category::class, 'category_id', 'id');
     }

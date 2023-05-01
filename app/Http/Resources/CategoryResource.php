@@ -14,7 +14,7 @@ class CategoryResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'slug' => $this->slug,
-            'parent' => $this->when($this->parent_id !== null, function () {
+            'parent' => $this->when($this->parent_id !== null, function () use ($request) {
                 return Category::where('id', $this->parent_id)->first();
             }),
             'children' => $this->when($this->children !== null, function () use ($request) {
