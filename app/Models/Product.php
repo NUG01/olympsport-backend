@@ -41,7 +41,6 @@ class Product extends Model
     {
         return $this->hasMany(Category::class, 'id', 'category_id');
     }
-
     public function brand(): BelongsTo
     {
         return $this->BelongsTo(Brand::class);

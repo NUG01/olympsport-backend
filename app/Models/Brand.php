@@ -12,7 +12,6 @@ class Brand extends Model
 {
     use HasFactory, HasJsonRelationships;
 
-    protected $table = 'brands';
 
     public $timestamps = false;
     protected $fillable = [

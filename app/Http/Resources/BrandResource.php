@@ -19,6 +19,7 @@ class BrandResource extends JsonResource
                 } elseif ($request->routeIs('admin.brands.show')) {
                     return $this->categories;
                 } else {
+                    return $this->categories->count();
                     return $this->categories;
                 }
             }),

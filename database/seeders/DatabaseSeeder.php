@@ -64,12 +64,12 @@ class DatabaseSeeder extends Seeder
         Brand::create([
             'name' => 'kajila',
             'slug' => str_slug('kajila', '_'),
-            'category_id' => 1,
+            'category_id' => [1],
         ]);
         Brand::create([
             'name' => 'abidas',
             'slug' => str_slug('abidas', '_'),
-            'category_id' => 2,
+            'category_id' => [2],
         ]);
         Subscription::create([
             'user_id' => $user1->id,

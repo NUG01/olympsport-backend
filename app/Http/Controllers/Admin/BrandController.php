@@ -10,6 +10,7 @@ use App\Models\Category;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class BrandController extends Controller
 {
@@ -37,10 +38,9 @@ class BrandController extends Controller
         return BrandResource::make($brand->loadMissing(['categories', 'products']));
     }
 
-    public function showCategoryList(Brand $brand, Request $request)
+    public function showCategoryList(Request $request, Brand $brand): JsonResponse
     {
-
-        return Category::where('name', 'LIKE', $request->name . '%')->whereNotIn('id', $brand->category_id)->get()->makeHidden('parent_id');
+        return response()->json(Category::where('name', 'LIKE', $request->name . '%')->whereNotIn('id', $brand->category_id)->get()->makeHidden('parent_id'));
     }
 
     public function brandCategories(Brand $brand): JsonResponse
@@ -48,7 +48,7 @@ class BrandController extends Controller
         return response()->json(Category::whereIn('id', $brand->category_id)->get()->makeHidden('parent_id'));
     }
 
-    public function update(Brand $brand, BrandRequest $request): BrandResource
+    public function update(BrandRequest $request, Brand $brand): BrandResource
     {
         $category_id = $request->category_id ? [(integer)$request->category_id] : null;
 
@@ -70,10 +70,10 @@ class BrandController extends Controller
         }
     }
 
-    public function destroy(Brand $brand): AnonymousResourceCollection
+    public function destroy(Brand $brand): Response
     {
         $brand->delete();
 
-        return $this->index();
+        return response()->noContent();
     }
 }
