@@ -43,18 +43,15 @@ class BrandController extends Controller
         return response()->json(Category::where('name', 'LIKE', $request->name . '%')->whereNotIn('id', $brand->category_id)->get()->makeHidden('parent_id'));
     }
 
-    public function brandCategories(Brand $brand): JsonResponse
-    {
-        return response()->json(Category::whereIn('id', $brand->category_id)->get()->makeHidden('parent_id'));
-    }
-
     public function update(BrandRequest $request, Brand $brand): BrandResource
     {
         $category_id = $request->category_id ? [(integer)$request->category_id] : null;
 
         $validated = $request->validated();
         $validated['slug'] = str_slug(preg_replace("/[\s-]+/", "_", $request->name), '_');
-        $validated['category_id'] = array_merge($brand->category_id, $category_id);
+
+        $array = array_merge($brand->category_id, $category_id);
+        $validated['category_id'] = array_unique($array);
 
         $brand->update($validated);
 
