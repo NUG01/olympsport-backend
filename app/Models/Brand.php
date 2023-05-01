@@ -11,19 +11,16 @@ class Brand extends Model
 {
     use HasFactory, HasJsonRelationships;
 
-    protected $table = 'brands';
 
     public $timestamps = false;
     protected $fillable = [
         'name',
         'slug',
         'category_id',
-        'product_id',
     ];
 
     protected $casts = [
-        'parent_id' => 'json',
-        'product_id' => 'json',
+        'category_id' => 'json',
     ];
 
     public function getRouteKeyName(): string

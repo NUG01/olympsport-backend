@@ -36,10 +36,11 @@ class BrandController extends Controller
         $brand->update($request->validated());
     }
 
-    public function destroy(Brand $brand): AnonymousResourceCollection
+    public function destroy(Brand $brand)
     {
+
         $brand->delete();
 
-        return $this->index();
+        return response()->noContent();
     }
 }

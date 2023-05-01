@@ -13,12 +13,13 @@ class BrandResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'slug' => $this->slug,
-            'category_id' => $this->when($this->id !== null, function () use ($request) {
+            'categories' => $this->when($this->id !== null, function () use ($request) {
                 if ($request->routeIs('admin.brands.index')) {
                     return $this->categories->count();
                 } elseif ($request->routeIs('admin.brands.show')) {
                     return $this->categories;
                 } else {
+                    return $this->categories->count();
                     return $this->categories;
                 }
             }),

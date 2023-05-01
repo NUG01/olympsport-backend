@@ -32,10 +32,11 @@ Route::prefix('admin')->middleware(['auth', 'is_admin'])->group(function () {
     });
 
     Route::controller(BrandController::class)->group(function () {
-        Route::get('/brands', 'index')->name('admin,brands.index');
+        Route::get('/brands', 'index')->name('admin.brands.index');
+        Route::get('/brand/{brand:id}', 'show')->name('admin.brands.show');
         Route::post('/brand/store', 'store')->name('admin.brands.store');
-        Route::patch('/brand/update/{brand}', 'update')->name('admin.brands.update');
-        Route::delete('/brand/delete/{brand}', 'delete')->name('admin.brands.delete');
+        Route::patch('/brand/update/{brand:id}', 'update')->name('admin.brands.update');
+        Route::delete('/brands/delete/{brand:id}', 'destroy')->name('admin.brands.destroy');
     });
 
     Route::controller(ProductController::class)->group(function () {
