@@ -20,7 +20,7 @@ class BrandRequest extends FormRequest
                 Rule::unique('brands', 'slug')->ignore($this->brand),
 
             ],
-            'category_id' => 'required',
+            'category_id' => 'sometimes',
         ];
     }
 }

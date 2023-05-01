@@ -21,7 +21,7 @@ class BrandController extends Controller
     {
         $validated = $request->validated();
         $validated['slug'] = str_slug($request->name, '_');
-        $validated['category_id'] = [(integer)$request->category_id];
+        $validated['category_id'] = [(int)$request->category_id];
 
         $brand = Brand::create($validated);
 
@@ -33,13 +33,15 @@ class BrandController extends Controller
         return BrandResource::make($brand->loadMissing(['categories', 'products']));
     }
 
-    public function showCategoryList(Brand $brand, Request $request)
+    public function showCategoryList(Request $request, Brand $brand)
     {
-
-        return Category::where('name', 'LIKE',  $request->name . '%')->whereNotIn('id', $brand->category_id)->get()->makeHidden('parent_id');
+        return
+            response()->json(
+                Category::where('name', 'LIKE',  $request->name . '%')->whereNotIn('id', $brand->category_id)->get()->makeHidden('parent_id')
+            );
     }
 
-    public function update(Brand $brand, BrandRequest $request): BrandResource
+    public function update(BrandRequest $request, Brand $brand): BrandResource
     {
         $validated = $request->validated();
         $validated['slug'] = str_slug(preg_replace("/[\s-]+/", "_", $request->name), '_');
