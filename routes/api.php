@@ -1,6 +1,7 @@
 <?php
 
-use App\Http\Controllers\{Admin\WebsiteAssetController,
+use App\Http\Controllers\{
+    Admin\WebsiteAssetController,
     api\BrandController,
     api\CategoryController,
     api\FavoriteController,
@@ -11,6 +12,11 @@ use App\Http\Controllers\{Admin\WebsiteAssetController,
 use App\Http\Resources\CityResource;
 use App\Models\City;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
+
+Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+    return $request->user();
+});
 
 Route::controller(CategoryController::class)->group(function () {
     Route::get('/categories', 'index')->name('categories.index');
@@ -22,7 +28,7 @@ Route::controller(BrandController::class)->group(function () {
     Route::get('/brand/{brand}', 'show')->name('brands.show');
 });
 
-Route::get('/cities', fn() => CityResource::collection(City::all()));
+Route::get('/cities', fn () => CityResource::collection(City::all()));
 
 Route::controller(ProductController::class)->group(function () {
     Route::get('/products/{token?}', 'index')->name('products.index');
@@ -56,7 +62,7 @@ Route::controller(ProfileController::class)->middleware(['auth:sanctum', 'is_see
     Route::delete('/user/delete/{user}', 'destroy')->name('user.delete');
 });
 
-Route::get('/product_assets', fn() => response()->json(config('product-assets')));
+Route::get('/product_assets', fn () => response()->json(config('product-assets')));
 
 Route::prefix('/admin')->middleware('is_admin')->group(function () {
     require_once __DIR__ . '/./admin.php';

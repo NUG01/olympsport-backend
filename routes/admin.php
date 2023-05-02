@@ -36,7 +36,7 @@ Route::controller(BrandController::class)->group(function () {
     Route::post('/brand/store', 'store')->name('admin.brands.store');
     Route::patch('/brand/update/{brand:id}', 'update')->name('admin.brands.update');
     Route::post('/brand/category_list/{brand:id}', 'showCategoryList')->name('admin.brands.categoryList');
-    Route::patch('/brand/remove_category/{brand:id}/{id}', 'removeCategory')->name('admin.brands.removeCategory');
+    Route::delete('/brand/remove_category/{brand:id}/{id}', 'removeCategory')->name('admin.brands.removeCategory');
     Route::delete('/brand/delete/{brand:id}', 'delete')->name('admin.brands.delete');
 });
 
