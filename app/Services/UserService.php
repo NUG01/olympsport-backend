@@ -18,6 +18,7 @@ class UserService
         $stripe = new StripeClient(env('STRIPE_SECRET'));
         $stripeId = Subscription::where('user_id', $user->id)->get();
 
+
         if ($user->stripe_id != null && $stripeId->count() > 0) {
             $intervals = $stripe->subscriptions->retrieve(
                 $stripeId[0]['stripe_id'],
@@ -29,7 +30,6 @@ class UserService
                 ]);
             }
         }
-
         $user->extra = (object)['intervals' => $intervals, 'dates' => $dates];
 
         return UserResource::make($user);

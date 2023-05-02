@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Admin;
 
+use App\Http\Resources\ProductResource;
 use App\Models\City;
 use App\Models\Plan;
 use App\Models\Product;
@@ -27,7 +28,7 @@ class UserResource extends JsonResource
             'address' => $this->address,
             'verified' => $this->email_verified_at ? true : false,
             'subscription' => $this->when($this->stripe_id !== null, function () use ($request) {
-                if ($request->routeIs('admin.users.get') && $request->user()->stripe_id !== null) {
+                if ($request->routeIs('admin.users.get') || $request->routeIs('user.profile') && $request->user()->stripe_id !== null) {
                     $plan = User::findOrFail($this->id)->subscriptions()->get()[0]['stripe_price'];
                     $canceled_at = $this->extra->intervals['plan']['cancel_at_period_end'];
                     if ($canceled_at === null || $canceled_at === false) {
@@ -54,7 +55,7 @@ class UserResource extends JsonResource
                         ];
                     }
                 }
-            })
+            }),
         ];
     }
 }
