@@ -19,7 +19,7 @@ return new class extends Migration
             $table->text('description');
             $table->json('color')->nullable();
             $table->string('size')->nullable();
-            $table->foreignId('brand_id')->nullable();
+            $table->foreignId('brand_id');
             $table->tinyInteger('boosted')->default(0);
             $table->datetimes();
         });
