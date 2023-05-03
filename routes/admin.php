@@ -26,7 +26,7 @@ Route::controller(CategoryController::class)->group(function () {
     Route::post('/category/store/{category?}', 'store')->name('admin.categories.store');
     Route::get('/category/{category:id}', 'show')->name('admin.categories.show');
     Route::patch('/category/update/{category:id}', 'update')->name('admin.categories.update');
-    Route::delete('/category/delete/{category:id}', 'destroy')->name('admin.categories.destroy');
+    Route::delete('/category/delete/{category}', 'destroy')->name('admin.categories.destroy');
     Route::post('/category/search', 'search')->name('admin.categories.search');
 });
 

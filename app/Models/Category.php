@@ -8,12 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
-use Spatie\Translatable\HasTranslations;
 
 
 class Category extends Model
 {
-    use HasFactory, HasTranslations;
+    use HasFactory;
 
     protected $table = 'categories';
 
