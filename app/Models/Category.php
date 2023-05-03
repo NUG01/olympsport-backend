@@ -8,14 +8,16 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
-use Staudenmeir\EloquentJsonRelations\HasJsonRelationships;
+use Spatie\Translatable\HasTranslations;
 
 
 class Category extends Model
 {
-    use HasFactory, HasJsonRelationships;
+    use HasFactory, HasTranslations;
 
     protected $table = 'categories';
+
+    // public $translatable = ['name'];
 
     protected array $observers = [
         Category::class => [CategoryObserver::class],
@@ -30,10 +32,16 @@ class Category extends Model
         'parent_id',
     ];
 
-     public function getRouteKeyName(): string
-     {
-         return 'slug';
-     }
+    protected $casts = [
+        'name' => 'json',
+    ];
+
+
+
+    public function getRouteKeyName(): string
+    {
+        return 'slug';
+    }
 
     public function parent(): BelongsTo
     {

@@ -66,5 +66,6 @@ class Kernel extends HttpKernel
         'verified' => \App\Http\Middleware\EnsureEmailIsVerified::class,
         'is_admin' => \App\Http\Middleware\isAdmin::class,
         'is_seeker' => \App\Http\Middleware\isSeeker::class,
+        'set.locale' => \App\Http\Middleware\SetLocale::class,
     ];
 }

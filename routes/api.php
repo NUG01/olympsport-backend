@@ -9,14 +9,54 @@ use App\Http\Controllers\{
     api\ProfileController,
     api\SubscriptionController
 };
+use App\Http\Controllers\api\LanguageController;
 use App\Http\Resources\CityResource;
 use App\Models\City;
+use App\Models\Test;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+
+///////////////////////////////
+////Localization testing
+///////////////////////////////
+Route::get('locale/{language}', LanguageController::class);
+
+
+Route::get('locale', function () {
+    return response()->json(app()->getLocale());
+});
+Route::get('test', function () {
+    $test = Test::find(1);
+
+
+    //gives current locale value
+    // return $test->name;
+
+    ///or
+    //gives all translations as object
+    return $test->getTranslations();
+});
+
+Route::post('test', function (Request $request) {
+
+    Test::create([
+        'name' => [
+            'fr' => $request->name['fr'],
+            'de' => $request->name['de']
+        ],
+    ]);
+    return response()->json('ok');
+});
+
+///////////////////////////////
+/////End testing
+///////////////////////////////
+
 
 Route::controller(CategoryController::class)->group(function () {
     Route::get('/categories', 'index')->name('categories.index');
